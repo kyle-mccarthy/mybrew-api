@@ -36,4 +36,13 @@ class Beer extends Model
     {
         return $this->belongsTo('App\Color');
     }
+
+    /**
+     * Get the history of all the ratings for the beer
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function history()
+    {
+        return $this->hasMany('App\History');
+    }
 }
