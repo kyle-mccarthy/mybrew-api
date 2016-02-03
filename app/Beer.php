@@ -27,4 +27,13 @@ class Beer extends Model
     {
         return $this->belongsTo('Aop\Category');
     }
+
+    /**
+     * Get the color for the beer
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function color()
+    {
+        return $this->belongsTo('App\Color');
+    }
 }
