@@ -45,4 +45,13 @@ class Beer extends Model
     {
         return $this->hasMany('App\History');
     }
+
+    /**
+     * Get the keywords for the particular beer through the many to many relationship
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function keywords()
+    {
+        return $this->belongsToMany('App\Keyword');
+    }
 }

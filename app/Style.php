@@ -17,4 +17,13 @@ class Style extends Model
     {
         return $this->belongsTo('App\Category');
     }
+
+    /**
+     * Get the beers that are of the particular style
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function beers()
+    {
+        return $this->hasMany('App\Beer');
+    }
 }
