@@ -15,6 +15,10 @@ class CreateHistoriesTable extends Migration
         Schema::create('histories', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->integer('user_id');
+            $table->integer('beer_id');
+            $table->integer('rating');
+            $table->text('notes');
         });
     }
 
