@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKeywordsTable extends Migration
+class CreateBeersKeywordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,11 @@ class CreateKeywordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('keywords', function (Blueprint $table) {
+        Schema::create('beers_keywords', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('name')->unique();
+            $table->integer('keyword_id');
+            $table->integer('beer_id');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateKeywordsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('keywords');
+        Schema::drop('beers_keywords');
     }
 }
