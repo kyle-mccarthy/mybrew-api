@@ -17,4 +17,13 @@ class Category extends Model
     {
         return $this->hasMany('App\Beer');
     }
+
+    /**
+     * Get the styles of beer for the category
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function styles()
+    {
+        return $this->hasMany('App\Style');
+    }
 }
