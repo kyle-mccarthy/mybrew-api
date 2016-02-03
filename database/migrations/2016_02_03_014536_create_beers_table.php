@@ -21,7 +21,7 @@ class CreateBeersTable extends Migration
             $table->integer('style_id');
             $table->integer('body');
             $table->integer('sweetness');
-            $table->integer('color');
+            $table->integer('color_id');
             $table->decimal('abv');
             $table->integer('ibu');
             $table->integer('hoppiness');
