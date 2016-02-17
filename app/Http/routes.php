@@ -3,6 +3,7 @@
 /**
  * Authentication routes
  */
+
 $router->group(['prefix' => 'api/v1'], function() {
     Route::post('auth/login', 'ApiAuthController@login');
     Route::post('auth/register', 'ApiAuthController@register');

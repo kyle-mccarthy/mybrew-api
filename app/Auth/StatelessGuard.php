@@ -3,6 +3,7 @@
 use App\User;
 use Auth;
 use Validator;
+use Hash;
 
 class StatelessGuard
 {
@@ -18,10 +19,11 @@ class StatelessGuard
     public function attempt($email, $password)
     {
         // get the user
-        $user = User::where('email', '=', $email)->where('password', '=', $password)->first();
+        $user = User::where('email', '=', $email)->first();
 
         // if the credentials were invalid the user record will be null
-        if (is_null($user)) {
+        if (is_null($user) || !Hash::check($password, $user->password)) {
+            dd($password);
             return false;
         }
 

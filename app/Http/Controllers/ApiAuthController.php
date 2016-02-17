@@ -1,9 +1,9 @@
-<?php use App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Auth\StatelessGuard;
 use App\User;
+use Validator;
 
 class ApiAuthController extends Controller
 {
@@ -20,13 +20,21 @@ class ApiAuthController extends Controller
      */
     public function login(Request $request)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
         ]);
 
+        // could not validate
+        if ($validator->fails()) {
+            return response([
+                'message' => 'Invalid data.',
+                'errors' => $validator->errors()->all(),
+            ], 400);
+        }
+
         // authentication not successful
-        if (!$this->auth->attempt($request->get('email'), bcrypt($request->get('password')))) {
+        if (!$this->auth->attempt($request->get('email'), $request->get('password'))) {
             return response([
                 'message' => 'Could not authenticate user based on email and password combination.'
             ], 400);
@@ -49,12 +57,24 @@ class ApiAuthController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validate($request, [
-            'email' => 'required|unique:users',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:8'
         ]);
 
-        $user = User::create($request->all());
+        // could not validate
+        if ($validator->fails()) {
+            return response([
+                'message' => 'Invalid data.',
+                'errors' => $validator->errors()->all(),
+            ], 400);
+        }
+
+        $user = new User;
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        $user->save();
+
         $token = $this->auth->generateUniqueToken($user);
 
         return response([
