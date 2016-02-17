@@ -1,16 +1,11 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Auth\StatelessGuard;
 use App\User;
 use Validator;
 
 class ApiAuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->auth = new StatelessGuard();
-    }
 
     /**
      * Attempt to log a user in based on the email and password combination POSTed.
@@ -44,7 +39,7 @@ class ApiAuthController extends Controller
         return response([
             'message' => 'The user has been authenticated.',
             'token_type' => 'bearer',
-            'token' => Auth::user()->token,
+            'token' => $this->auth->user()->api_token,
         ]);
     }
 

@@ -4,9 +4,43 @@ use App\User;
 use Auth;
 use Validator;
 use Hash;
+use Request;
 
 class StatelessGuard
 {
+    protected $user;
+    protected $token;
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * Get the user
+     *
+     * @return mixed
+     */
+    public function user()
+    {
+        if (is_null($this->user)) {
+            $this->getTokenFromHeaders();
+            $this->authByToken($this->token);
+        }
+        return $this->user;
+    }
+
+    /**
+     * Get the authorization bearer token from the headers, useful when AUTHing a user hitting the API that
+     * has already logged in.
+     */
+    public function getTokenFromHeaders()
+    {
+        $this->token = Request::header('bearer');
+    }
+
+
     /**
      * Attempt to get the user by the email and hashed password passed through the arguments.  If the attempt is not
      * successful return false.  If the attempt is successful set the user on the auth, set the API token, save the user,
@@ -29,7 +63,7 @@ class StatelessGuard
 
         $this->generateUniqueToken($user);
 
-        Auth::login($user);
+        $this->user = $user;
         return true;
     }
 
@@ -46,7 +80,7 @@ class StatelessGuard
         if (is_null($user)) {
             return false;
         }
-        Auth::login($user);
+        $this->user = $user;
         return true;
     }
 
