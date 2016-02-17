@@ -10,6 +10,7 @@ class StatelessGuard
      * Attempt to get the user by the email and hashed password passed through the arguments.  If the attempt is not
      * successful return false.  If the attempt is successful set the user on the auth, set the API token, save the user,
      * and then return true.
+     *
      * @param $email
      * @param $password
      * @return bool
@@ -33,6 +34,7 @@ class StatelessGuard
     /**
      * Attempt to set the current user using the api auth token.  Will check for a user in the DB with the token
      * assigned to their account.
+     *
      * @param $token
      * @return bool
      */
@@ -76,6 +78,5 @@ class StatelessGuard
         }
         return null;
     }
-
 
 }

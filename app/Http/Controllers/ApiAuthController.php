@@ -43,7 +43,7 @@ class ApiAuthController extends Controller
     /**
      * Attempt to create a new user based on the information POSTed.  If the attempt was successful, respond with
      * the success message and the token to be used with the user.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
