@@ -5,6 +5,7 @@ use Auth;
 use Validator;
 use Hash;
 use Request;
+use Illuminate\Support\Str;
 
 class StatelessGuard
 {
@@ -37,7 +38,10 @@ class StatelessGuard
      */
     public function getTokenFromHeaders()
     {
-        $this->token = Request::header('bearer');
+        $bearer = Request::header('authorization');
+        if (Str::startsWith($bearer, 'Bearer ')) {
+            $this->token = Str::substr($bearer, 7);
+        }
     }
 
 
