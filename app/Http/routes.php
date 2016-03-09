@@ -18,4 +18,7 @@ $router->group(['prefix' => 'api/v1'], function() {
  */
 $router->group(['prefix' => 'api/v1', 'middleware' => 'auth.api'], function() {
     Route::get('profile/user', 'ProfileController@show');
+
+    // color routes
+    Route::get('colors/', 'ColorController@index');
 });
