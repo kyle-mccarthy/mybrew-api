@@ -32,7 +32,7 @@ class ApiAuthController extends Controller
         if (!$this->auth->attempt($request->get('email'), $request->get('password'))) {
             return response([
                 'message' => 'Could not authenticate user based on email and password combination.'
-            ], 400);
+            ], 401);
         }
 
         // authentication successful, return the token
