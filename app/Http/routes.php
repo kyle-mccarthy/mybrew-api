@@ -8,7 +8,7 @@ Route::get('/', function() {
     return response('welcome to mybrew, all api routes are prefixed with api/v1');
 });
 
-$router->group(['prefix' => 'api/v1'], function() {
+$router->group(['prefix' => 'api'], function() {
     Route::post('auth/login', 'ApiAuthController@login');
     Route::post('auth/register', 'ApiAuthController@register');
 });
@@ -16,7 +16,7 @@ $router->group(['prefix' => 'api/v1'], function() {
 /**
  * Group all the routes together and make them use the api guard.  Prefix them with api/{version_number}
  */
-$router->group(['prefix' => 'api/v1', 'middleware' => 'auth.api'], function() {
+$router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
     Route::get('profile/user', 'ProfileController@show');
 
     // color routes
