@@ -17,16 +17,12 @@ class CreateBeersTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->integer('brewery_id');
-            $table->integer('category_id');
             $table->integer('style_id');
-            $table->integer('body');
-            $table->integer('sweetness');
-            $table->integer('color_id');
+            $table->integer('srm');
             $table->decimal('abv');
             $table->integer('ibu');
-            $table->integer('hoppiness');
-            $table->integer('maltiness');
-            $table->text('description');
+            $table->string('url')->nullable();
+            $table->text('description')->nullable();
         });
     }
 

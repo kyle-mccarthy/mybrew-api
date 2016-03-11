@@ -17,6 +17,7 @@ class CreateBreweriesTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('location');
+            $table->string('url')->nullable();
         });
     }
 
