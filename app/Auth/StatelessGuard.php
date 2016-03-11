@@ -61,7 +61,6 @@ class StatelessGuard
 
         // if the credentials were invalid the user record will be null
         if (is_null($user) || !Hash::check($password, $user->password)) {
-            dd($password);
             return false;
         }
 
