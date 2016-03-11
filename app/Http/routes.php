@@ -21,6 +21,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
 
     // color routes
     Route::get('colors/', 'ColorController@index');
+    Route::post('colors/beers', 'ColorController@beers');
 
     // breweries routes
     Route::get('breweries/', 'BreweryController@index');
