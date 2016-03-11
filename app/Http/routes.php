@@ -24,4 +24,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
 
     // breweries routes
     Route::get('breweries/', 'BreweryController@index');
+
+    // beer routes
+    Route::get('beers/', 'BeerController@index');
 });
