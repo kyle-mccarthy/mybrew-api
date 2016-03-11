@@ -2,6 +2,14 @@
 /node_modules
 Homestead.yaml
 Homestead.json
+<<<<<<< HEAD
 .env
 .idea/*
 *.DS_Store
+/bootstrap/compiled.php
+.env.*.php
+.env.php
+.env
+.idea/*
+*.DS_Store
+dataset/*
