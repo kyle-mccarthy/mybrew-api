@@ -31,4 +31,9 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
     // beer routes
     Route::get('beers/', 'BeerController@index');
     Route::get('beers/beer/{id}', 'BeerController@beer');
+
+    // cellar routes
+    Route::get('cellar/', 'CellarController@index');
+    Route::post('cellar/add-beer', 'CellarController@addBeer');
+    Route::post('cellar/update-beer', 'CellarController@updateBeer');
 });
