@@ -5,7 +5,7 @@
  */
 
 Route::get('/', function() {
-    return response('welcome to mybrew, all api routes are prefixed with api/v1');
+    return response('welcome to mybrew, all api routes are prefixed with api/');
 });
 
 $router->group(['prefix' => 'api'], function() {
