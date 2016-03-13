@@ -26,7 +26,7 @@ class CellarController extends Controller
      */
     public function index()
     {
-        $history = $this->user->history()->with('beers')->get();
+        $history = $this->user->history()->with('beer')->get();
         return response([
             'message' => 'The beer history of the user',
             'cellar' => $history,
@@ -58,7 +58,7 @@ class CellarController extends Controller
         $check = History::where('user_id', '=', $this->user->id)->where('beer_id', '=', $request->get('beer'))->get();
         if (count($check) > 0) {
             return response([
-                'status' => 'ok',
+                'status' => 'failed',
                 'message' => 'This beer already exists in your history.  Did you mean to update the record?',
             ], 400);
         }
