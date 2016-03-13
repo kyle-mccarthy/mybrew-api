@@ -23,6 +23,7 @@ class ApiAuthController extends Controller
         // could not validate
         if ($validator->fails()) {
             return response([
+                'status' => 'failed',
                 'message' => 'Invalid data.',
                 'errors' => $validator->errors()->all(),
             ], 400);
@@ -31,12 +32,14 @@ class ApiAuthController extends Controller
         // authentication not successful
         if (!$this->auth->attempt($request->get('email'), $request->get('password'))) {
             return response([
+                'status' => 'failed',
                 'message' => 'Could not authenticate user based on email and password combination.'
             ], 401);
         }
 
         // authentication successful, return the token
         return response([
+            'status' => 'ok',
             'message' => 'The user has been authenticated.',
             'token_type' => 'bearer',
             'token' => $this->auth->user()->api_token,
@@ -60,6 +63,7 @@ class ApiAuthController extends Controller
         // could not validate
         if ($validator->fails()) {
             return response([
+                'status' => 'failed',
                 'message' => 'Invalid data.',
                 'errors' => $validator->errors()->all(),
             ], 400);
@@ -73,6 +77,7 @@ class ApiAuthController extends Controller
         $token = $this->auth->generateUniqueToken($user);
 
         return response([
+            'status' => 'ok',
             'message' => 'The user has been created.',
             'token_type' => 'bearer',
             'token' => $token,

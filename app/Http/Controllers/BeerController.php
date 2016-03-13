@@ -13,6 +13,7 @@ class BeerController extends Controller
     {
         $beers = Beer::with('brewery')->get();
         return response([
+            'status' => 'ok',
             'message' => 'Index of all the beer data stored in the database',
             'copyright' => 'All information aggregated is information obtained from the brewer\'s website',
             'beers' => $beers
@@ -30,11 +31,13 @@ class BeerController extends Controller
         $beer = Beer::find($id);
         if (!!$beer) {
             return response([
+                'status' => 'ok',
                 'message' => 'The beer with the id of ' . $id,
                 'beer' => $beer,
             ]);
         }
         return response([
+            'status' => 'failed',
             'error' => 'The beer with the id ' . $id . ' does not exist',
         ], 400);
     }

@@ -32,12 +32,14 @@ class ColorController extends Controller
         if (!empty($start) && !empty($end)) {
             $beers = Beer::where('srm', '>=', $start)->where('srm', '<=', $end)->get();
             return response([
+                'status' => 'ok',
                 'message' => 'Beers that fall in the SRM range of ' . $start . ' and ' . $end,
                 'beers' => $beers,
             ]);
         } else if (!empty($start)) {
             $beers = Beer::where('srm', '=', $start)->get();
             return response([
+                'status' => 'ok',
                 'message' => 'Beers that have the SRM value of ' . $start,
                 'beers' => $beers,
             ]);
@@ -46,6 +48,7 @@ class ColorController extends Controller
             if (!!$color) {
                 $beers = Beer::where('srm', '>=', $color->start)->where('srm', '<=', $color->end)->get();
                 return response([
+                    'status' => 'ok',
                     'message' => 'Beers that are of the color ' . $color->name . ' (id: ' . $colorId . ')',
                     'beers' => $beers,
                 ]);
@@ -53,6 +56,7 @@ class ColorController extends Controller
         }
 
         return response([
+            'status' => 'failed',
             'message' => 'Invalid data received.  You must provide the range of SRM values with the name start and end,' .
                 'or a color ID must be provided.  To get a list of colors including their ID, name, start and end range ' .
                 'perform a GET request on the color index route.',

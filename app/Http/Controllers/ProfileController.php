@@ -6,6 +6,7 @@ class ProfileController extends Controller
     {
         $user = $this->auth->user();
         return response([
+            'status' => 'ok',
             'message' => 'Information about the currently authenticated user.',
             'user' => $user,
         ]);
