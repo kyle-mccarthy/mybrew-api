@@ -20,15 +20,6 @@ class Beer extends Model
     }
 
     /**
-     * Get the category that the beer belongs to
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category()
-    {
-        return $this->belongsTo('Aop\Category');
-    }
-
-    /**
      * Get the color for the beer
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -53,5 +44,13 @@ class Beer extends Model
     public function keywords()
     {
         return $this->belongsToMany('App\Keyword');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function style()
+    {
+        return $this->belongsTo('App\Style');
     }
 }
