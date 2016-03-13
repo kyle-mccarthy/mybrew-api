@@ -19,7 +19,7 @@ class ColorController extends Controller
 
     /**
      * Get beers by their color values.  Can pass either start SRM value, start and end SRM values, or the color ID.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
@@ -36,7 +36,7 @@ class ColorController extends Controller
                 'beers' => $beers,
             ]);
         } else if (!empty($start)) {
-            $beers = Beer::where('srm', '=', $start);
+            $beers = Beer::where('srm', '=', $start)->get();
             return response([
                 'message' => 'Beers that have the SRM value of ' . $start,
                 'beers' => $beers,
@@ -46,7 +46,7 @@ class ColorController extends Controller
             if (!!$color) {
                 $beers = Beer::where('srm', '>=', $color->start)->where('srm', '<=', $color->end)->get();
                 return response([
-                    'message' => 'Beers that are of the color ' . $color->name,
+                    'message' => 'Beers that are of the color ' . $color->name . ' (id: ' . $colorId . ')',
                     'beers' => $beers,
                 ]);
             }

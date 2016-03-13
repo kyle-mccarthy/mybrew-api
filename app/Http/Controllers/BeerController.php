@@ -11,6 +11,10 @@ class BeerController extends Controller
     public function index()
     {
         $beers = Beer::with('brewery')->get();
-        return response($beers);
+        return response([
+            'message' => 'Index of all the beer data stored in the database',
+            'copyright' => 'All information aggregated is information obtained from the brewer\'s website',
+            'beers' => $beers
+        ]);
     }
 }
