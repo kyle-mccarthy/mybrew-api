@@ -17,7 +17,9 @@ $router->group(['prefix' => 'api'], function() {
  * Group all the routes together and make them use the api guard.  Prefix them with api/{version_number}
  */
 $router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
+    // user routes
     Route::get('profile/user', 'ProfileController@show');
+    Route::post('profile/user/update', 'ProfileController@update');
 
     // color routes
     Route::get('colors/', 'ColorController@index');
