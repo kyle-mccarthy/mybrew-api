@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function setBirthdayAttribute($birthday) {
+        if (!!$birthday) {
+            $this->attributes['birthday'] = date('Y-m-d', strtotime($birthday));
+        }
+    }
+
     /**
      * Get the histories/ratings of beer for the user
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -91,6 +91,7 @@ class ApiAuthController extends Controller
             'message' => 'The user has been created.',
             'token_type' => 'bearer',
             'token' => $token,
+            'user' => $user,
         ]);
     }
 }
