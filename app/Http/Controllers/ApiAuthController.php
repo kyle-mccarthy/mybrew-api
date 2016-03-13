@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\User;
 use Validator;
+use Carbon\Carbon;
 
 class ApiAuthController extends Controller
 {
@@ -55,10 +56,18 @@ class ApiAuthController extends Controller
      */
     public function register(Request $request)
     {
+        $dt = new Carbon();
+        $before = $dt->subYears(21)->format('Y-m-d');
+
+        $messages = [
+            'birthday.before' => 'You must be at least 21 years old to use the application'
+        ];
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8'
-        ]);
+            'password' => 'required|min:8',
+            'birthday' => 'required|date|before:' . $before
+        ], $messages);
 
         // could not validate
         if ($validator->fails()) {
