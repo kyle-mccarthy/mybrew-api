@@ -81,6 +81,7 @@ class ApiAuthController extends Controller
         $user = new User;
         $user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));
+        $user->birthday = $request->get('birthday');
         $user->save();
 
         $token = $this->auth->generateUniqueToken($user);
