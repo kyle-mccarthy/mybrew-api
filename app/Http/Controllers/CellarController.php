@@ -28,6 +28,7 @@ class CellarController extends Controller
     {
         $history = $this->user->history()->with('beer')->get();
         return response([
+            'status' => 'ok',
             'message' => 'The beer history of the user',
             'cellar' => $history,
         ]);
