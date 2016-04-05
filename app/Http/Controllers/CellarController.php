@@ -26,7 +26,7 @@ class CellarController extends Controller
      */
     public function index()
     {
-        $history = $this->user->history()->with('beer', 'beer.style')->get();
+        $history = $this->user->history()->with('beer', 'beer.style', 'beer.brewery')->get();
         return response([
             'status' => 'ok',
             'message' => 'The beer history of the user',

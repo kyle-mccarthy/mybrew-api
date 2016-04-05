@@ -30,6 +30,7 @@ class BeerController extends Controller
     {
         $beer = Beer::find($id);
         if (!!$beer) {
+            $beer->load('brewery', 'style');
             return response([
                 'status' => 'ok',
                 'message' => 'The beer with the id of ' . $id,
