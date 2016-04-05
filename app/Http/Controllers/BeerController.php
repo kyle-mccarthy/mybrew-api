@@ -11,7 +11,7 @@ class BeerController extends Controller
      */
     public function index()
     {
-        $beers = Beer::with('brewery')->get();
+        $beers = Beer::with('brewery', 'style')->get();
         return response([
             'status' => 'ok',
             'message' => 'Index of all the beer data stored in the database',
