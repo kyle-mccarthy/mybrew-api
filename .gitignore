@@ -13,3 +13,4 @@ Homestead.json
 .idea/*
 *.DS_Store
 dataset/*
+db_backups/*
