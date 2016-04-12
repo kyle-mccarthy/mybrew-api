@@ -42,7 +42,7 @@ class Beer extends Model
      */
     public function keywords()
     {
-        return $this->belongsToMany('App\Keyword');
+        return $this->belongsToMany('App\Keyword', 'beers_keywords');
     }
 
     /**

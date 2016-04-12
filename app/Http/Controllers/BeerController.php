@@ -107,7 +107,7 @@ class BeerController extends Controller
         // biggest appeal keyword
         if ($request->has('keywords')) {
             $keyword = $request->get('keywords');
-            $keyword = strtok($keyword, " ");
+            $keyword = strtok($keyword, ' ');
             array_push($keywords, $keyword);
         }
 
@@ -115,10 +115,10 @@ class BeerController extends Controller
         if ($request->has('fruits')) {
             foreach($request->get('fruits') as $fruit) {
                 $fruit = strtolower($fruit);
-                if ($fruit == "berries") {
-                    array_push($keywords, "cherry");
-                    array_push($keywords, "raspberry");
-                    array_push($keywords, "strawberry");
+                if ($fruit == 'berries') {
+                    array_push($keywords, 'cherry');
+                    array_push($keywords, 'raspberry');
+                    array_push($keywords, 'strawberry');
                 } else {
                     array_push($keywords, $fruit);
                 }
@@ -128,9 +128,9 @@ class BeerController extends Controller
         // aroma keywords
         if ($request->has('aroma')) {
             if ($request->get('aroma')) {
-                array_push($keywords, "pine");
-                array_push($keywords, "ginger");
-                array_push($keywords, "oak");
+                array_push($keywords, 'pine');
+                array_push($keywords, 'ginger');
+                array_push($keywords, 'oak');
             }
         }
 
@@ -172,16 +172,37 @@ class BeerController extends Controller
             }
         }
 
-        // $beers = Beer::whereHas('keywords', function($query) {
-        //
-        // })->get();
+        $query = Beer::query();
 
+        // select beers based on keywords - get the union of them and then narrow it on the other parameters
+        foreach($keywords as $keyword) {
+            $query->whereHas('keywords', function($query) use ($keyword) {
+                $query->orWhere('name', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        // if the ibu has been set, select beers that fall within that range
+        if (!is_null($ibu)) {
+            $query->where('ibu', '>=', $ibu[0])->where('ibu', '<=', $ibu[1]);
+        }
+
+        // if the abv has been set, select beers that fall within that range
+        if (!is_null($abv)) {
+            $query->where('abv', '>=', $abv[0])->where('abv', '<=', $abv[1]);
+        }
+
+        // if the srm has been set, select beers that fall within that range
+        if (!is_null($srm)) {
+            $query->where('srm', '>=', $srm[0])->where('srm', '<=', $srm[1]);
+        }
+
+        $beers = $query->get();
 
         // return a successful response with the beers chosen
         return response([
             'status' => 'ok',
             'message' => 'The following beers were selected',
-            'beers' => [],
+            'beers' => [$beers],
             'profile' => [
                 'keywords' => $keywords,
                 'ibu' => $ibu,
