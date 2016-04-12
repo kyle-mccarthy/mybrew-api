@@ -209,9 +209,9 @@ class CellarController extends Controller
         $ibu /= $starCount;
 
         // retrieve beers that fall within a certain range of the means
-        $beers = Beer::where('srm', '>=', $srm - 2)->where('srm', '<=', $srm + 2)
-            ->where('ibu', '>=', $ibu - 20)->where('ibu', '<=', $ibu + 20)
-            ->where('abv', '>=', $abv - 1)->where('abv', '<=', $abv + 1)
+        $beers = Beer::where('srm', '>=', $srm - 1.5)->where('srm', '<=', $srm + 1.5)
+            ->where('ibu', '>=', $ibu - 15)->where('ibu', '<=', $ibu + 15)
+            ->where('abv', '>=', $abv - .75)->where('abv', '<=', $abv + .75)
             ->get();
 
         return response([
