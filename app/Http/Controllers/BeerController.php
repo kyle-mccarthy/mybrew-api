@@ -2,6 +2,8 @@
 
 use App\Beer;
 use App\DailyBeer;
+use \Validator;
+use Illuminate\Http\Request;
 
 class BeerController extends Controller
 {
@@ -71,8 +73,36 @@ class BeerController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function quiz(Request $request)
     {
-        // @todo beer suggestion based on user quiz
+        $validator = Validator::make($request->all(), [
+            'keywords' => 'required',
+            'fruits' => 'required',
+            'aroma' => 'required',
+            'flavors' => 'required',
+            'bitterness' => 'required',
+            'color' => 'required',
+            'maltiness' => 'required',
+        ]);
+
+        // one of the required post parameters was not include, error
+        if ($validator->fails()) {
+            return response([
+                'status' => 'failed',
+                'message' => 'The request did not contain all of the answers',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        // return a successful response with the beers chosen
+        return response([
+            'status' => 'ok',
+            'message' => 'The following beers were selected',
+            'beers' => [],
+        ]);
     }
 }
