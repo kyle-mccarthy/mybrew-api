@@ -15,5 +15,6 @@ class Controller extends BaseController
     public function __construct(StatelessGuard $statelessGuard)
     {
         $this->auth = $statelessGuard;
+        $this->user = $this->auth->user();
     }
 }
