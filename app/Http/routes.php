@@ -39,4 +39,5 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
     Route::post('cellar/add-beer', 'CellarController@addBeer');
     Route::post('cellar/update-beer', 'CellarController@updateBeer');
     Route::post('cellar/remove-beer', 'CellarController@destroyBeer');
+    Route::get('cellar/recommend', 'CellarController@recommend');
 });

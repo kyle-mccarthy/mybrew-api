@@ -4,6 +4,7 @@ use App\Auth\StatelessGuard;
 use Illuminate\Http\Request;
 use Validator;
 use App\History;
+use App\Beer;
 
 class CellarController extends Controller
 {
@@ -167,7 +168,48 @@ class CellarController extends Controller
         ]);
     }
 
-    // @todo beer suggestion based on user cellar
+    public function recommend()
+    {
+        // get the history/past beers for a user
+        $history = History::with('beer')->where('user_id', '=', $this->user->id)->get();
+
+        // define the variables that serve as predictors
+        $count = count($history);
+        $starCount = 0;
+        $srm = 0;
+        $abv = 0;
+        $ibu = 0;
+
+        foreach ($history as $rating) {
+            $beer = $rating->beer;
+            $starCount += $rating->rating;
+            $srm += $beer->srm;
+            $abv += $beer->abv;
+            $ibu += $beer->ibu;
+        }
+
+        // determine the mean values
+        $srm /= $count;
+        $abv /= $count;
+        $ibu /= $count;
+
+        // retrieve beers that fall within a certain range of the means
+        $beers = Beer::where('srm', '>=', $srm - 2)->where('srm', '<=', $srm + 2)
+            ->where('ibu', '>=', $ibu - 20)->where('ibu', '<=', $ibu + 20)
+            ->where('abv', '>=', $abv - 1)->where('abv', '<=', $abv + 1)
+            ->get();
+
+        return response([
+            'status' => 'ok',
+            'message' => 'The following beers are in the users recommendation profile',
+            'profile' => [
+                'srm' => $srm,
+                'ibu' => $ibu,
+                'abv' => $abv,
+            ],
+            'beers' => $beers,
+        ]);
+    }
 
     // @todo beer suggestion based on user quiz
 }
