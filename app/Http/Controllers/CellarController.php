@@ -194,7 +194,7 @@ class CellarController extends Controller
             ]);
         }
 
-        // add variable to it's total weighted value
+        // add variable to its total weighted value
         foreach ($history as $rating) {
             $beer = $rating->beer;
             $starCount += $rating->rating;
