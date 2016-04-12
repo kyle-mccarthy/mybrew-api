@@ -80,13 +80,13 @@ class BeerController extends Controller
     public function quiz(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'keywords' => 'required',
-            'fruits' => 'required',
-            'aroma' => 'required',
-            'flavors' => 'required',
-            'bitterness' => 'required',
-            'color' => 'required',
-            'maltiness' => 'required',
+            'keywords' => 'string',
+            'fruits' => 'array',
+            'aroma' => 'boolean',
+            'flavors' => 'array',
+            'bitterness' => 'integer',
+            'color' => 'integer',
+            'maltiness' => 'boolean',
         ]);
 
         // one of the required post parameters was not include, error
@@ -98,11 +98,96 @@ class BeerController extends Controller
             ], 400);
         }
 
+        // collect the keywords that will be searched for
+        $keywords = [];
+        $ibu = null;
+        $abv = null;
+        $srm = null;
+
+        // biggest appeal keyword
+        if ($request->has('keywords')) {
+            $keyword = $request->get('keywords');
+            $keyword = strtok($keyword, " ");
+            array_push($keywords, $keyword);
+        }
+
+        // fruit keywords
+        if ($request->has('fruits')) {
+            foreach($request->get('fruits') as $fruit) {
+                $fruit = strtolower($fruit);
+                if ($fruit == "berries") {
+                    array_push($keywords, "cherry");
+                    array_push($keywords, "raspberry");
+                    array_push($keywords, "strawberry");
+                } else {
+                    array_push($keywords, $fruit);
+                }
+            }
+        }
+
+        // aroma keywords
+        if ($request->has('aroma')) {
+            if ($request->get('aroma')) {
+                array_push($keywords, "pine");
+                array_push($keywords, "ginger");
+                array_push($keywords, "oak");
+            }
+        }
+
+        // flavor undertones keywords
+        if ($request->has('flavors')) {
+            foreach($request->get('flavors') as $flavor) {
+                array_push($keywords, $flavor);
+            }
+        }
+
+        // get the extent of bitterness that they like
+        if ($request->has('bitterness')) {
+            $ibu = [];
+            $bitterness = $request->get('bitterness');
+            if ($bitterness == 1) {
+                $ibu = [0, 33];
+            } else if ($bitterness == 2) {
+                $ibu = [33, 66];
+            } else if ($bitterness == 3) {
+                $ibu = [66, 200];
+            }
+        }
+
+        if ($request->has('color')) {
+            $color = $request->get('color');
+            if ($color == 1) {
+                $srm = [0, 14];
+            } else if ($color == 2) {
+                $srm = [14, 20];
+            } else if ($color == 3) {
+                $srm = [20, 100];
+            }
+        }
+
+        // do they like malti (high abv) beers
+        if ($request->has('maltiness')) {
+            if ($request->get('maltiness')) {
+                $abv = [6, 15];
+            }
+        }
+
+        // $beers = Beer::whereHas('keywords', function($query) {
+        //
+        // })->get();
+
+
         // return a successful response with the beers chosen
         return response([
             'status' => 'ok',
             'message' => 'The following beers were selected',
             'beers' => [],
+            'profile' => [
+                'keywords' => $keywords,
+                'ibu' => $ibu,
+                'srm' => $srm,
+                'abv' => $abv,
+            ]
         ]);
     }
 }
