@@ -14,7 +14,8 @@ class BeerController extends Controller
      */
     public function index()
     {
-        $beers = Beer::with('brewery', 'style')->get();
+        $usersBeers = $this->user->history()->pluck('beer_id');
+        $beers = Beer::with('brewery', 'style')->whereNotIn('id', $usersBeers)->get();
         return response([
             'status' => 'ok',
             'message' => 'Index of all the beer data stored in the database',
