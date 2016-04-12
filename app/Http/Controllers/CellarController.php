@@ -168,6 +168,12 @@ class CellarController extends Controller
         ]);
     }
 
+    /**
+     * Get the beer recommendations for a user.  Create a user's taste profile using the star rating system as a weight
+     * and provide recommendations for beers that fall in a user's profile.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function recommend()
     {
         // get the history/past beers for a user
@@ -188,6 +194,7 @@ class CellarController extends Controller
             ]);
         }
 
+        // add variable to it's total weighted value
         foreach ($history as $rating) {
             $beer = $rating->beer;
             $starCount += $rating->rating;
@@ -196,7 +203,7 @@ class CellarController extends Controller
             $ibu += $beer->ibu * $rating->rating;
         }
 
-        // determine the mean values
+        // determine the mean weight values
         $srm /= $starCount;
         $abv /= $starCount;
         $ibu /= $starCount;
