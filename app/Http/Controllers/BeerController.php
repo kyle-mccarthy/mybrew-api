@@ -70,4 +70,9 @@ class BeerController extends Controller
             'beer' => $daily->beer,
         ]);
     }
+
+    public function quiz(Request $request)
+    {
+        // @todo beer suggestion based on user quiz
+    }
 }

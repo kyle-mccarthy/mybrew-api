@@ -225,6 +225,4 @@ class CellarController extends Controller
             'beers' => $beers,
         ]);
     }
-
-    // @todo beer suggestion based on user quiz
 }

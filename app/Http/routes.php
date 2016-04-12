@@ -33,6 +33,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth.api'], function() {
     Route::get('beers/', 'BeerController@index');
     Route::get('beers/beer/{id}', 'BeerController@beer');
     Route::get('beers/daily-beer', 'BeerController@dailyBeer');
+    Route::post('beers/quiz', 'BeerController@quiz');
 
     // cellar routes
     Route::get('cellar', 'CellarController@index');
