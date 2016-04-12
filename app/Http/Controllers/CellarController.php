@@ -166,4 +166,10 @@ class CellarController extends Controller
             'message' => 'The beer has been removed from the cellar',
         ]);
     }
+
+    // @todo daily beer recommendation/random picker
+
+    // @todo beer suggestion based on user cellar
+
+    // @todo beer suggestion based on user quiz
 }
