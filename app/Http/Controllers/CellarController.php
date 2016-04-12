@@ -128,4 +128,42 @@ class CellarController extends Controller
             'history' => $history,
         ]);
     }
+
+    /**
+     * Remove the beer from a user's cellar
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function destroyBeer(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'beer' => 'required|integer|exists:beers,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'failed',
+                'message' => 'Invalid data.',
+                'errors' => $validator->errors()->all(),
+            ], 400);
+        }
+
+        // make sure the user actually has the beer in their cellar before removing it
+        $beer = History::where('user_id', '=', $this->user->id)->where('beer_id', '=', $request->get('beer'))->get();
+
+        if (count($beer) == 0) {
+            return response([
+                'status' => 'failed',
+                'message' => 'Beer does not exist in cellar',
+            ], 400);
+        }
+
+        $beer->delete();
+
+        return response([
+            'status' => 'ok',
+            'message' => 'The beer has been removed from the cellar',
+        ]);
+    }
 }
