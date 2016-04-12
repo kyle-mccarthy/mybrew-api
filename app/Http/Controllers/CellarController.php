@@ -180,18 +180,26 @@ class CellarController extends Controller
         $abv = 0;
         $ibu = 0;
 
+        // ensure that the cellar has beers
+        if ($count == 0) {
+            return response([
+                'status' => 'failed',
+                'message' => 'To get a recommendation the user\'s cellar must contain beers.',
+            ]);
+        }
+
         foreach ($history as $rating) {
             $beer = $rating->beer;
             $starCount += $rating->rating;
-            $srm += $beer->srm;
-            $abv += $beer->abv;
-            $ibu += $beer->ibu;
+            $srm += $beer->srm * $rating->rating;
+            $abv += $beer->abv * $rating->rating;
+            $ibu += $beer->ibu * $rating->rating;
         }
 
         // determine the mean values
-        $srm /= $count;
-        $abv /= $count;
-        $ibu /= $count;
+        $srm /= $starCount;
+        $abv /= $starCount;
+        $ibu /= $starCount;
 
         // retrieve beers that fall within a certain range of the means
         $beers = Beer::where('srm', '>=', $srm - 2)->where('srm', '<=', $srm + 2)
@@ -201,7 +209,7 @@ class CellarController extends Controller
 
         return response([
             'status' => 'ok',
-            'message' => 'The following beers are in the users recommendation profile',
+            'message' => 'The following beers are in the user\'s recommendation profile',
             'profile' => [
                 'srm' => $srm,
                 'ibu' => $ibu,
