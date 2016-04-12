@@ -62,8 +62,11 @@ class BeerController extends Controller
             $daily->save();
         }
 
+        $daily->beer->load('Brewery', 'Style');
+
         return response([
             'status' => 'ok',
+            'message' => 'The beer of the day',
             'beer' => $daily->beer,
         ]);
     }
