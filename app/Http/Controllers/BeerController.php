@@ -93,7 +93,7 @@ class BeerController extends Controller
         if ($validator->fails()) {
             return response([
                 'status' => 'failed',
-                'message' => 'The request did not contain all of the answers',
+                'message' => 'The request parameters contained invalid values',
                 'errors' => $validator->errors(),
             ], 400);
         }
