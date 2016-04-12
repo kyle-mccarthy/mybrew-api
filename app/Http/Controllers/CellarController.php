@@ -150,7 +150,7 @@ class CellarController extends Controller
         }
 
         // make sure the user actually has the beer in their cellar before removing it
-        $beer = History::where('user_id', '=', $this->user->id)->where('beer_id', '=', $request->get('beer'))->get();
+        $beer = History::where('user_id', '=', $this->user->id)->where('beer_id', '=', $request->get('beer'))->first();
 
         if (count($beer) == 0) {
             return response([
