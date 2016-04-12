@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Beer;
+use App\DailyBeer;
 
 class BeerController extends Controller
 {
@@ -41,5 +42,29 @@ class BeerController extends Controller
             'status' => 'failed',
             'error' => 'The beer with the id ' . $id . ' does not exist',
         ], 400);
+    }
+
+    /**
+     * Get the random beer for the day.  If there isn't one that is the first API request to the route for the day
+     * so randomly choose one and then store it.  Alternatively could use cron jobs.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function dailyBeer()
+    {
+        $daily = DailyBeer::with('beer')->where(\DB::raw('date(created_at)'), '=', [date('Y-m-d')])->first();
+
+        // the beer does not exist for the current day, so select a random one and store it as the daily beer pick
+        if (count($daily) == 0) {
+            $random = Beer::all()->random(1);
+            $daily = new DailyBeer();
+            $daily->beer_id = $random->id;
+            $daily->save();
+        }
+
+        return response([
+            'status' => 'ok',
+            'beer' => $daily->beer,
+        ]);
     }
 }
