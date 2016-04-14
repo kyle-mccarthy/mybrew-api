@@ -197,7 +197,7 @@ class BeerController extends Controller
             $query->where('srm', '>=', $srm[0])->where('srm', '<=', $srm[1]);
         }
 
-        $beers = $query->get();
+        $beers = $query->with('style')->get();
 
         // return a successful response with the beers chosen
         return response([

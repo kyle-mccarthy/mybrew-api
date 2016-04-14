@@ -200,7 +200,7 @@ class CellarController extends Controller
         $beers = Beer::where('srm', '>=', $srm - 1.5)->where('srm', '<=', $srm + 1.5)
             ->where('ibu', '>=', $ibu - 15)->where('ibu', '<=', $ibu + 15)
             ->where('abv', '>=', $abv - .75)->where('abv', '<=', $abv + .75)
-            ->get();
+            ->with('style')->get();
 
         return response([
             'status' => 'ok',
