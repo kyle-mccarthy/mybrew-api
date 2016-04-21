@@ -116,10 +116,13 @@ class BeerController extends Controller
         if ($request->has('fruits')) {
             foreach($request->get('fruits') as $fruit) {
                 $fruit = strtolower($fruit);
+                $fruit = explode('/', $fruit);
                 if ($fruit == 'berries') {
                     array_push($keywords, 'cherry');
                     array_push($keywords, 'raspberry');
                     array_push($keywords, 'strawberry');
+                } else if (is_array($fruit)) {
+                    $keywords = array_merge($keywords, $fruit);
                 } else {
                     array_push($keywords, $fruit);
                 }
