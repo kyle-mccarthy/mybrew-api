@@ -196,11 +196,14 @@ class CellarController extends Controller
         $abv /= $starCount;
         $ibu /= $starCount;
 
+        // exclude beers that are already in a users cellar
+        $usersBeers = $this->user->history()->pluck('beer_id');
+
         // retrieve beers that fall within a certain range of the means
         $beers = Beer::where('srm', '>=', $srm - 1.5)->where('srm', '<=', $srm + 1.5)
             ->where('ibu', '>=', $ibu - 15)->where('ibu', '<=', $ibu + 15)
             ->where('abv', '>=', $abv - .75)->where('abv', '<=', $abv + .75)
-            ->with('style')->get();
+            ->with('style')->whereNotIn('id', $usersBeers)->get();
 
         return response([
             'status' => 'ok',

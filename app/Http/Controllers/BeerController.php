@@ -200,7 +200,10 @@ class BeerController extends Controller
             $query->where('srm', '>=', $srm[0])->where('srm', '<=', $srm[1]);
         }
 
-        $beers = $query->with('style')->get();
+        // exclude beers that are already in a users cellar
+        $usersBeers = $this->user->history()->pluck('beer_id');
+
+        $beers = $query->with('style')->whereNotIn('id', $usersBeers)->get();
 
         // return a successful response with the beers chosen
         return response([
